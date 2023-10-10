@@ -5,11 +5,17 @@ import { Ticket } from "./Ticket.js"
 import { TicketBar } from "./TicketFilterBar"
 
 
-export const TicketList = () => {
+export const TicketList = ({ currentUser }) => {
     const [allTickets, setAllTickets] = useState([])
     const [showEmergencyOnly, setShowEmergencyOnly] = useState(false)
     const [filteredTickets, setFilteredTickets] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
+
+    const getAndSetTickets = () => {
+        getAllTickets().then((ticketsArray) => {
+            setAllTickets(ticketsArray)
+        })
+    }
 
     useEffect(() => {
         getAllTickets().then(ticketsArray => {
@@ -45,7 +51,11 @@ export const TicketList = () => {
         setSearchTerm={setSearchTerm} />
             <article className="tickets">
                 {filteredTickets.map((ticketObj) => {
-                    return <Ticket ticket={ticketObj} key={(ticketObj.id)}/>
+                    return <Ticket
+                    ticket={ticketObj} 
+                    currentUser={currentUser}
+                    getAndSetTickets={getAndSetTickets}
+                    key={(ticketObj.id)}/>
                     
                 })}
             </article>
@@ -90,24 +100,25 @@ export const TicketList = () => {
 
 
 
-    {/* <div className="filter-bar">
-        <button className="filter-btn btn-primary"
-            onClick={() => {
-                setShowEmergencyOnly(true)
-            }}>Emergency</button>
-    </div>
 
-    <div>
-        <button className="filter-btn btn-info"
-            onClick={() => {
-                setShowEmergencyOnly(false)
-            }}>Show all</button>
-    </div>
-    <input 
-    onChange={(event) => {
-        setSearchTerm(event.target.value)
-    }}
-    type="text"
-    placeholder="Search Tickets"
-    className="ticket-search"
-    /> */}
+    // {/* <div className="filter-bar">
+    //     <button className="filter-btn btn-primary"
+    //         onClick={() => {
+    //             setShowEmergencyOnly(true)
+    //         }}>Emergency</button>
+    // </div>
+
+    // <div>
+    //     <button className="filter-btn btn-info"
+    //         onClick={() => {
+    //             setShowEmergencyOnly(false)
+    //         }}>Show all</button>
+    // </div>
+    // <input 
+    // onChange={(event) => {
+    //     setSearchTerm(event.target.value)
+    // }}
+    // type="text"
+    // placeholder="Search Tickets"
+    // className="ticket-search"
+    // /> */}
